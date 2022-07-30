@@ -24,6 +24,10 @@ metadata
         attribute "active_power_l3_w", "number"
         attribute "power", "number"
         attribute "total_gas_m3", "number"
+	attribute "gas_timestamp", "number"
+	attribute "previous_total_gas_m3", "number"
+	attribute "previous_gas_timestamp", "number"    
+	    
     }
 }
 
@@ -67,14 +71,19 @@ def initialize()
     sendEvent(name: "total_power_export_t2_kwh", value: "unknown")
     sendEvent(name: "active_power_l1_w", value: "unknown")
     sendEvent(name: "power", value: "unknown")
-    sendEvent(name: "total_gas_m3", value: "unknown")
-
     if (gas) {
             sendEvent(name: "total_gas_m3", value: "unknown")
+	    sendEvent(name: "gas_timestamp", value: "unknown")
+            sendEvent(name: "previous_total_gas_m3", value: "unknown")
+            sendEvent(name: "previous_gas_timestamp", value: "unknown")
+	    
         }
     else {
             sendEvent(name: "total_gas_m3", value: "0")    
-        }
+	    sendEvent(name: "gas_timestamp", value: "0")
+            sendEvent(name: "previous_total_gas_m3", value: "0")
+            sendEvent(name: "previous_gas_timestamp", value: "0")
+    }
 	
     if (threephase) {
             sendEvent(name: "active_power_l2_w", value: "unknown")
@@ -114,6 +123,9 @@ def refresh()
      if (gas)
         {
             sendEvent([name: "total_gas_m3", value: Float.valueOf(res?.total_gas_m3), unit: "m3"])
+            sendEvent([name: "gas_timestamp", value: Float.valueOf(res?.gas_timestamp), unit: "timestamp number"])
+            //sendEvent([name: "previous_total_gas_m3", value: Float.valueOf(res?.total_gas_m3), unit: "m3"])
+            //sendEvent([name: "previous_gas_timestamp", value: Float.valueOf(res?.total_gas_m3), unit: "m3"])
         }
 		
     if (threephase)
