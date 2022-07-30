@@ -24,9 +24,9 @@ metadata
         attribute "active_power_l3_w", "number"
         attribute "power", "number"
         attribute "total_gas_m3", "number"
-	attribute "gas_timestamp", "number"
-	attribute "previous_total_gas_m3", "number"
-	attribute "previous_gas_timestamp", "number"    
+	    attribute "gas_timestamp", "number"
+    	attribute "previous_total_gas_m3", "number"
+	    attribute "previous_gas_timestamp", "number"    
 	    
     }
 }
@@ -40,7 +40,7 @@ preferences
         input name: "threephase", type: "bool", title: "Enable 3 phase logging", defaultValue: false
 		input name: "gas", type: "bool", title: "Enable gas usage logging", defaultValue: true
         input ( name: 'pollInterval', type: 'enum', title: 'Update interval (in minutes)', options: ['1', '5', '10', '15', '30', '60', '180'], required: true, defaultValue: '60' )
-	input name: "enablePoll", type: "bool", title: "Enable device polling", defaultValue: false
+	    input name: "enablePoll", type: "bool", title: "Enable device polling", defaultValue: false
     }
 }
 
@@ -73,9 +73,11 @@ def initialize()
     sendEvent(name: "power", value: "unknown")
     if (gas) {
             sendEvent(name: "total_gas_m3", value: "unknown")
-	    sendEvent(name: "gas_timestamp", value: "unknown")
+	        sendEvent(name: "gas_timestamp", value: "unknown")
             sendEvent(name: "previous_total_gas_m3", value: "unknown")
             sendEvent(name: "previous_gas_timestamp", value: "unknown")
+            state['total_gas_m3'] = 0
+            state['gas_timestamp'] = "unknown"
 	    
         }
     else {
@@ -123,9 +125,13 @@ def refresh()
      if (gas)
         {
             sendEvent([name: "total_gas_m3", value: Float.valueOf(res?.total_gas_m3), unit: "m3"])
-            sendEvent([name: "gas_timestamp", value: Float.valueOf(res?.gas_timestamp), unit: "timestamp number"])
-            //sendEvent([name: "previous_total_gas_m3", value: Float.valueOf(res?.total_gas_m3), unit: "m3"])
-            //sendEvent([name: "previous_gas_timestamp", value: Float.valueOf(res?.total_gas_m3), unit: "m3"])
+            sendEvent([name: "gas_timestamp", value: res?.gas_timestamp, unit: "timestamp number"])
+            if (res?.gas_timestamp!=state['gas_timestamp']) {
+              sendEvent([name: "previous_total_gas_m3", value: state['total_gas_m3'], unit: "m3"])
+              sendEvent([name: "previous_gas_timestamp", value: state['gas_timestamp'], unit: "timestamp number"])
+            }
+            state['total_gas_m3'] = Float.valueOf(res?.total_gas_m3)
+            state['gas_timestamp'] = res?.gas_timestamp
         }
 		
     if (threephase)
