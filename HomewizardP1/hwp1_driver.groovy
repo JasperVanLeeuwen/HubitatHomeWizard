@@ -99,27 +99,27 @@ def refresh()
         sendEvent(name: "meter_model", value: res?.meter_model.toString())
         sendEvent(name: "wifi_ssid", value: res?.wifi_ssid.toString())
         sendEvent([name: "wifi_strength", value: res?.wifi_strength.toInteger(), unit: "%"])
-        sendEvent([name: "total_power_import_t1_kwh", value: res?.total_power_import_t1_kwh.toInteger(), unit: "kWh"])
-        sendEvent([name: "total_power_import_t2_kwh", value: res?.total_power_import_t2_kwh.toInteger(), unit: "kWh"])
-        sendEvent([name: "total_power_export_t1_kwh", value: res?.total_power_export_t1_kwh.toInteger(), unit: "kWh"])
-        sendEvent([name: "total_power_export_t2_kwh", value: res?.total_power_export_t2_kwh.toInteger(), unit: "kWh"])
+        sendEvent([name: "total_power_import_t1_kwh", value: Float.valueOf(res?.total_power_import_t1_kwh), unit: "kWh"])
+        sendEvent([name: "total_power_import_t2_kwh", value: Float.valueOf(res?.total_power_import_t2_kwh), unit: "kWh"])
+        sendEvent([name: "total_power_export_t1_kwh", value: Float.valueOf(res?.total_power_export_t1_kwh), unit: "kWh"])
+        sendEvent([name: "total_power_export_t2_kwh", value: Float.valueOf(res?.total_power_export_t2_kwh), unit: "kWh"])
 	    sendEvent([name: "power", value: res?.active_power_w.toInteger(), unit: "W"])
         
      if (res) { 
        if (res.active_power_l1_w != "NULL") {
-         sendEvent([name: "active_power_l1_w", value: res?.active_power_l1_w.toInteger(), unit: "W"])
+         sendEvent([name: "active_power_l1_w", value: Float.valueOf(res?.active_power_l1_w), unit: "W"])
       }
     }  
 
      if (gas)
         {
-            sendEvent([name: "total_gas_m3", value: res?.total_gas_m3.toInteger(), unit: "m3"])
+            sendEvent([name: "total_gas_m3", value: Float.valueOf(res?.total_gas_m3), unit: "m3"])
         }
 		
     if (threephase)
         {
-            sendEvent([name: "active_power_l2_w", value: res?.active_power_l2_w.toInteger(), unit: "W"])
-            sendEvent([name: "active_power_l3_w", value: res?.active_power_l3_w.toInteger(), unit: "W"])
+            sendEvent([name: "active_power_l2_w", value: Float.valueOf(res?.active_power_l2_w), unit: "W"])
+            sendEvent([name: "active_power_l3_w", value: Float.valueOf(res?.active_power_l3_w), unit: "W"])
         }
 
         
